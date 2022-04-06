@@ -2475,3 +2475,32 @@ EXPECT=<<EOF
             0x00000812      sta   0x03ff,x                             ; a,x,0x03ff,+,=[1]
 EOF
 RUN
+
+NAME=remove analysis hint
+FILE==
+CMDS=<<EOF
+e asm.functions=false
+e asm.offset=false
+e asm.lines=false
+e asm.lines.bb=false
+e asm.marks=false
+e asm.bytes=false
+e asm.comments=false
+e asm.flags=false
+wx 31ed4989d1
+pd 1
+aha ppc
+pd 1
+aha-
+pd 1
+aha ppc
+aha 0
+pd 1
+EOF
+EXPECT=<<EOF
+xor   ebp, ebp
+lbz   r10, -0x12cf(r9)
+xor   ebp, ebp
+xor   ebp, ebp
+EOF
+RUN
